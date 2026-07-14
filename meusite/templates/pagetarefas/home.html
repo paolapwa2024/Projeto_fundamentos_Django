@@ -21,26 +21,29 @@
         .container {
             background-color: #ffffff;
             width: 100%;
-            max-width: 500px;
+            max-width: 800px;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            text-align: center;
         }
 
         h1 {
             color: #333;
             margin-bottom: 30px;
             font-size: 24px;
+            text-align: center;
         }
 
         nav ul {
             list-style: none;
             padding: 0;
-            margin: 0;
+            margin: 0 0 30px 0;
             display: flex;
-            flex-direction: column;
             gap: 12px;
+        }
+
+        nav ul li {
+            flex: 1;
         }
 
         nav a {
@@ -51,23 +54,127 @@
             padding: 12px 20px;
             border-radius: 6px;
             font-size: 16px;
+            text-align: center;
             transition: background-color 0.2s;
         }
 
         nav a:hover {
             background-color: #0056b3;
         }
+
+        h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            background-color: #007bff;
+            color: white;
+            text-align: left;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        thead th:first-child {
+            border-radius: 6px 0 0 6px;
+        }
+
+        thead th:last-child {
+            border-radius: 0 6px 6px 0;
+        }
+
+        tbody td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+            color: #444;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Badge para o status (feito/pendente) */
+        .status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-true {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-false {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .vazio {
+            text-align: center;
+            color: #888;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Seja bem-vindo {{ nome }}!</h1>
+
         <nav>
             <ul>
                 <li><a href="{% url 'tarefas:home' %}">Home</a></li>
                 <li><a href="{% url 'tarefas:adicionar' %}">Adicionar Tarefa</a></li>
             </ul>
         </nav>
+
+        <h2>Lista de tarefas</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Assunto</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                    <th>Data de Criação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tarefa in tarefas %}
+                <tr>
+                    <td>{{ tarefa.assunto }}</td>
+                    <td>{{ tarefa.descricao }}</td>
+                    <td>
+                        {% if tarefa.status %}
+                            <span class="status status-true">Concluída</span>
+                        {% else %}
+                            <span class="status status-false">Pendente</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ tarefa.data_criacao }}</td>
+                    <td><a href="{% url 'tarefas:remover' id=tarefa.id %}">Remover</a></td>
+                    <td><a href="{% url 'tarefas:editar' id=tarefa.id %}">Editar</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="vazio">Nenhuma tarefa cadastrada ainda.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

@@ -10,36 +10,38 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2f7, #e4e9f2);
             margin: 0;
             padding: 40px 20px;
             display: flex;
             justify-content: center;
+            min-height: 100vh;
         }
 
         .container {
             background-color: #ffffff;
             width: 100%;
-            max-width: 800px;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            max-width: 850px;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
         h1 {
-            color: #333;
+            color: #222;
             margin-bottom: 30px;
-            font-size: 24px;
+            font-size: 26px;
             text-align: center;
+            font-weight: 600;
         }
 
         nav ul {
             list-style: none;
             padding: 0;
-            margin: 0 0 30px 0;
+            margin: 0 0 35px 0;
             display: flex;
-            gap: 12px;
+            gap: 14px;
         }
 
         nav ul li {
@@ -51,53 +53,65 @@
             background-color: #007bff;
             color: white;
             text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 6px;
+            padding: 13px 20px;
+            border-radius: 8px;
             font-size: 16px;
+            font-weight: 500;
             text-align: center;
-            transition: background-color 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.25);
         }
 
         nav a:hover {
             background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.35);
         }
 
         h2 {
-            font-size: 18px;
+            font-size: 19px;
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
         }
 
         thead th {
             background-color: #007bff;
             color: white;
             text-align: left;
-            padding: 12px;
+            padding: 14px 12px;
             font-size: 14px;
+            font-weight: 600;
         }
 
         thead th:first-child {
-            border-radius: 6px 0 0 6px;
+            border-radius: 8px 0 0 8px;
         }
 
         thead th:last-child {
-            border-radius: 0 6px 6px 0;
+            border-radius: 0 8px 8px 0;
         }
 
         tbody td {
-            padding: 12px;
+            padding: 14px 12px;
             border-bottom: 1px solid #eee;
             font-size: 14px;
             color: #444;
         }
 
+        tbody tr {
+            transition: background-color 0.15s ease;
+        }
+
         tbody tr:hover {
-            background-color: #f8f9fa;
+            background-color: #f4f8ff;
         }
 
         tbody tr:last-child td {
@@ -107,8 +121,8 @@
         /* Badge para o status (feito/pendente) */
         .status {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
+            padding: 5px 12px;
+            border-radius: 14px;
             font-size: 12px;
             font-weight: bold;
         }
@@ -123,16 +137,36 @@
             color: #721c24;
         }
 
+        .acoes a {
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 10px;
+            font-size: 13px;
+        }
+
+        .acoes a.remover {
+            color: #dc3545;
+        }
+
+        .acoes a.editar {
+            color: #007bff;
+        }
+
+        .acoes a:hover {
+            text-decoration: underline;
+        }
+
         .vazio {
             text-align: center;
             color: #888;
-            padding: 20px;
+            padding: 25px;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Seja bem-vindo {{ nome }}!</h1>
+        <h1>Seja bem-vindo, {{ nome }}!</h1>
 
         <nav>
             <ul>
@@ -150,6 +184,7 @@
                     <th>Descrição</th>
                     <th>Status</th>
                     <th>Data de Criação</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -165,12 +200,14 @@
                         {% endif %}
                     </td>
                     <td>{{ tarefa.data_criacao }}</td>
-                    <td><a href="{% url 'tarefas:remover' id=tarefa.id %}">Remover</a></td>
-                    <td><a href="{% url 'tarefas:editar' id=tarefa.id %}">Editar</a></td>
+                    <td class="acoes">
+                        <a class="editar" href="{% url 'tarefas:editar' id=tarefa.id %}">Editar</a>
+                        <a class="remover" href="{% url 'tarefas:remover' id=tarefa.id %}">Remover</a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4" class="vazio">Nenhuma tarefa cadastrada ainda.</td>
+                    <td colspan="5" class="vazio">Nenhuma tarefa cadastrada ainda.</td>
                 </tr>
                 {% endfor %}
             </tbody>

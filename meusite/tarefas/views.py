@@ -5,7 +5,7 @@ from .forms import TarefaForm
 
 def tarefas_home(request):
     contexto = {
-        'nome': 'Bruno',
+        'nome': 'Paola',
         "tarefas": TarefaModel.objects.all()
     }
     return render(request, 'pagetarefas/home.html', contexto)

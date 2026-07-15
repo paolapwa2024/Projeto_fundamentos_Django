@@ -5,4 +5,3 @@ class TarefaForm(forms.ModelForm):
     class Meta:
         model = TarefaModel
         fields = ['assunto', 'descricao', 'status']
-        
